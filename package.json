@@ -1,0 +1,7 @@
+{
+  "name": "tft-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "David Bee <baeddavid@gmail.com>",
+  "license": "MIT"
+}
