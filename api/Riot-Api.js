@@ -1,9 +1,9 @@
 const TeemoJS = require("teemojs");
-const api = TeemoJS("RGAPI-f7625f51-530f-4a07-8d79-3b1a145b3639");
+const api = TeemoJS();
 
 module.exports = {
-    getSummonerPuuid,
-    getSummonerTftMatchHistory
+    getSummonerNameFromPuuid,
+    getSummonerTftMatchHistory,
 };
 
 async function getSummonerPuuid(summonerName) {
@@ -25,18 +25,21 @@ async function getTftMatchHistory(tftMatchIds) {
     return tftMatchHistory;
 }
 
-async function getSummonerNameFromPuuid(puuid) {
-    const summoner = await api.get("na1", "summoner.getByPUUID", puuid);
-    return summoner.name;
+async function getSummonerNameFromPuuid(req, res) {
+    const summoner = await api.get("na1", "summoner.getByPUUID", req.params.puuid);
+    console.log(summoner.name);
+    await res.json(summoner.name);
 }
 
-async function getSummonerTftMatchHistory(summonerName) {
-    return getSummonerPuuid(summonerName)
-        .then(function(puuid) { return getSummonerTftMatchIds(puuid) })
-        .then(function(matchIds) { return getTftMatchHistory(matchIds) })
-        .then(function(history) {
+async function getSummonerTftMatchHistory(req, res) {
+    return getSummonerPuuid(req.params.summonername)
+        .then(puuid => getSummonerTftMatchIds(puuid))
+        .then(matchIds => getTftMatchHistory(matchIds))
+        .then(history => {
             let games = [];
             for(let match of history) games.push(match.info);
-            return games;
-        });
+            console.log(games)
+            res.json(games);
+        })
+        .catch(console.log)
 }
