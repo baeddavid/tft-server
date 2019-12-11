@@ -1,5 +1,5 @@
 const TeemoJS = require("teemojs");
-const api = TeemoJS();
+const api = TeemoJS("");
 
 module.exports = {
     getSummonerNameFromPuuid,
@@ -10,7 +10,6 @@ module.exports = {
 
 async function getSummonerIdFromSummonerName(summonerName) {
     const summoner = await api.get("na1", "summoner.getBySummonerName", summonerName);
-    console.log(summoner.id)
     return summoner.id;
 }
 
@@ -35,7 +34,6 @@ async function getTftMatchHistory(tftMatchIds) {
 
 async function getTftRankHelper(summonerId) {
     const rank =  await api.get("na1", "tftLeague.getLeagueEntriesForSummoner", summonerId);
-    console.log(rank);
     return rank;
 }
 
